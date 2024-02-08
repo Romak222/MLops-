@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Registration</title>
+    <style>
+        /* Your existing styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 400px;
+            max-width: 100%;
+        }
+
+        .tab {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .tab button {
+            background-color: transparent;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            outline: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .tab button:hover {
+            background-color: #f2f2f2;
+        }
+
+        .tab button.active {
+            background-color: #ddd;
+        }
+
+        .form-group {
+            padding: 20px;
+        }
+
+        .form-group label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .bus-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            z-index: -1;
+        }
+
+
+        .form-group button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <img class="bus-image" src="bus-cover-image.jpg" alt="Bus Cover Image">
+<div class="container">
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'loginTab')" id="defaultOpen">Login</button>
+        <button class="tablinks" onclick="openTab(event, 'registerTab')">Register</button>
+    </div>
+
+    <div class="form-group" id="loginTab">
+        <h2>Login</h2>
+        <form action="#" method="post" onsubmit="return validateForm('login')">
+            <label for="loginUsername">Username:</label>
+            <input type="text" id="loginUsername" name="loginUsername" required>
+
+            <label for="loginPassword">Password:</label>
+            <input type="password" id="loginPassword" name="loginPassword" required>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div class="form-group" id="registerTab" style="display:none;">
+        <h2>Register</h2>
+        <form action="#" method="post" onsubmit="return validateForm('register')">
+            <label for="registerUsername">Username:</label>
+            <input type="text" id="registerUsername" name="registerUsername" required>
+
+            <label for="registerPassword">Password:</label>
+            <input type="password" id="registerPassword" name="registerPassword" required>
+
+            <label for="registerEmail">Email:</label>
+            <input type="text" id="registerEmail" name="registerEmail" required>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, formGroup, tablinks;
+        formGroup = document.getElementsByClassName("form-group");
+        for (i = 0; i < formGroup.length; i++) {
+            formGroup[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    function validateForm(formType) {
+        var username, password, email;
+
+        if (formType === 'login') {
+            username = document.getElementById("loginUsername").value;
+            password = document.getElementById("loginPassword").value;
+
+            if (username === "" || password === "") {
+                alert("Please enter both username and password for login.");
+                return false;
+            }
+        } else if (formType === 'register') {
+            username = document.getElementById("registerUsername").value;
+            password = document.getElementById("registerPassword").value;
+            email = document.getElementById("registerEmail").value;
+
+            if (username === "" || password === "" || email === "") {
+                alert("Please enter all fields for registration.");
+                return false;
+            }
+
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+        }
+
+        // For demonstration purposes, redirect to home.html on successful login or registration
+        window.location.href = 'home.html';  // Replace with the actual URL of your home page
+
+        return false;  // Prevent the default form submission to avoid opening a new page
+    }
+
+    document.getElementById("defaultOpen").click();
+</script>
+
+</body>
+</html>

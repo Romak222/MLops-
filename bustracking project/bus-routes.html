@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Routes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        select {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4caf50;
+            color: #fff;
+        }
+        .bus-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            z-index: -1;
+        }
+
+    </style>
+</head>
+<body>
+    <img class="bus-image" src="bus-cover-image.jpg" alt="Bus Cover Image">
+<div class="container">
+    <h2>Bus Routes</h2>
+    
+    <label for="departureStation">Departure Station:</label>
+    <select id="departureStation">
+        <option value="StationA">Station A</option>
+        <option value="StationB">Station B</option>
+        <option value="StationC">Station C</option>
+        <!-- Add more stations as needed -->
+    </select>
+
+    <label for="arrivalStation">Arrival Station:</label>
+    <select id="arrivalStation">
+        <option value="StationA">Station A</option>
+        <option value="StationB">Station B</option>
+        <option value="StationC">Station C</option>
+        <!-- Add more stations as needed -->
+    </select>
+
+    <button onclick="searchBuses()">Search Buses</button>
+
+    <div id="busDetails"></div>
+</div>
+
+<script>
+    function searchBuses() {
+        var departureStation = document.getElementById('departureStation').value;
+        var arrivalStation = document.getElementById('arrivalStation').value;
+
+        // Perform the bus search (you can replace this with actual data or API call)
+        var busData = getBusData(departureStation, arrivalStation);
+
+        // Display the bus details
+        displayBusDetails(busData);
+    }
+
+    function getBusData(departureStation, arrivalStation) {
+        // Replace this with actual data or API call to get bus details based on stations
+        // For demonstration, returning static data
+        return {
+            buses: [
+                { busNumber: 'Bus101', departureRoute: 'Station A - Station B', arrivalRoute: 'Station B - Station C', departureTime: '08:00 AM', arrivalTime: '10:00 AM' },
+                { busNumber: 'Bus102', departureRoute: 'Station B - Station C', arrivalRoute: 'Station C - Station D', departureTime: '10:30 AM', arrivalTime: '12:30 PM' },
+                // Add more buses as needed
+            ]
+        };
+    }
+
+    function displayBusDetails(busData) {
+        var busDetailsDiv = document.getElementById('busDetails');
+        busDetailsDiv.innerHTML = '';
+
+        if (busData && busData.buses.length > 0) {
+            var table = document.createElement('table');
+            var thead = document.createElement('thead');
+            var tbody = document.createElement('tbody');
+
+            var headings = ['Bus Number', 'Departure Route', 'Arrival Route', 'Departure Time', 'Arrival Time'];
+            var trHead = document.createElement('tr');
+
+            headings.forEach(function (heading) {
+                var th = document.createElement('th');
+                th.textContent = heading;
+                trHead.appendChild(th);
+            });
+
+            thead.appendChild(trHead);
+            table.appendChild(thead);
+
+            busData.buses.forEach(function (bus) {
+                var tr = document.createElement('tr');
+                var values = [bus.busNumber, bus.departureRoute, bus.arrivalRoute, bus.departureTime, bus.arrivalTime];
+
+                values.forEach(function (value) {
+                    var td = document.createElement('td');
+                    td.textContent = value;
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            });
+
+            table.appendChild(tbody);
+            busDetailsDiv.appendChild(table);
+        } else {
+            busDetailsDiv.textContent = 'No buses found for the selected route.';
+        }
+    }
+</script>
+
+</body>
+</html>

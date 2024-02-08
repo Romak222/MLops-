@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Route Map</title>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHSfBglWdal7IVNAs0cvNpPB7LnMuNKRY&callback=initMap" async defer></script>
+    <script>
+        // Replace YOUR_API_KEY with your actual Google Maps API key
+
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 20.072459, lng: 73.903992 },
+                zoom: 12,
+            });
+
+            // Define station coordinates
+            const stationCoordinates = [
+                { lat: 20.072459, lng: 73.903992 },
+                { lat: 20.069453, lng: 73.900177 },
+                { lat: 20.047365, lng: 73.877046 },
+                { lat: 20.035114, lng: 73.865455 },
+                { lat: 20.030979, lng: 73.857543 },
+                { lat: 20.025485, lng: 73.842049 },
+                { lat: 19.997236, lng: 73.844663 },
+                { lat: 20.001793, lng: 73.879995 },
+                { lat: 19.996504, lng: 73.899611 },
+                { lat: 19.996988, lng: 73.907798 },
+                { lat: 19.991788, lng: 73.910970 }
+            ];
+
+            // Create a polyline for the route
+            const route = new google.maps.Polyline({
+                path: stationCoordinates,
+                geodesic: true,
+                strokeColor: '#0000FF', // Line color
+                strokeOpacity: 1.0,
+                strokeWeight: 3, // Line thickness
+            });
+
+            route.setMap(map);
+
+            // Add markers for each station
+            stationCoordinates.forEach((coord, index) => {
+                const marker = new google.maps.Marker({
+                    position: coord,
+                    map: map,
+                    title: `Station ${index + 1}`
+                });
+            });
+        }
+    </script>
+</body>
+</html>

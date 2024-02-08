@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Bus</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            background-color: white;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        #busLocation {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+        }
+
+        .station {
+            background-color: #FF0000; /* Red color for not reached */
+            width: 100px;
+            height: 20px;
+            margin: 10px auto;
+            color: white;
+            padding: 5px;
+            text-align: center;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .station.reached {
+            background-color: #00FF00; /* Green color for reached */
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        h3 {
+            color: #333;
+            margin-top: 30px;
+        }
+    </style>
+    <script>
+        const THINGSPEAK_CHANNEL_ID = '2402342'; // Replace with your ThingSpeak Channel ID
+        const THINGSPEAK_API_KEY = 'XV5MJV5HXRS4HRDT'; // Replace with your ThingSpeak API Key
+
+        function fetchBusLocation() {
+            const url = `https://api.thingspeak.com/channels/${THINGSPEAK_CHANNEL_ID}/feeds.json?results=1`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.feeds.length > 0) {
+                        const latitude = parseFloat(data.feeds[0].field1);
+                        const longitude = parseFloat(data.feeds[0].field2);
+
+                        document.getElementById('busLocation').innerText = `Latitude: ${latitude}, Longitude: ${longitude}`;
+
+                        updateStationStatus(latitude, longitude);
+                    }
+                })
+                .catch(error => console.error('Error fetching bus location:', error));
+        }
+
+        function updateStationStatus(latitude, longitude) {
+            // Define the coordinates for each station in decimal degrees
+            const stationCoordinates = [
+                { lat: 20.0936944, lng: 73.9259 }, // Station 1 coordinates (converted from 20°05'37.3")
+                { lat: 40, lng: 50 },         // Station 2 coordinates
+                { lat: 60, lng: 70 },         // Station 3 coordinates
+                { lat: 80, lng: 90 }          // Station 4 coordinates
+            ];
+
+            stationCoordinates.forEach((station, index) => {
+                const stationElement = document.getElementById(`station-${index + 1}`);
+                const distance = getDistanceFromLatLonInKm(latitude, longitude, station.lat, station.lng);
+
+                if (distance < 1) { // Assuming 1 km radius for reach
+                    stationElement.classList.add('reached');
+                } else {
+                    stationElement.classList.remove('reached');
+                }
+            });
+        }
+
+        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the earth in kilometers
+            const dLat = deg2rad(lat2 - lat1);
+            const dLon = deg2rad(lon2 - lon1);
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; // Distance in kilometers
+        }
+
+        function deg2rad(deg) {
+            return deg * (Math.PI / 180);
+        }
+
+        function viewMap() {
+            // Replace the following coordinates with your predefined route
+            const routeCoordinates = [
+            {lat:20.096390, 73.927102},
+                { lat: 20.072459, lng: 73.903992 },
+                { lat: 20.069453, lng: 73.900177 },
+                { lat: 20.047365, lng: 73.877046 },
+                { lat: 20.035114, lng: 73.865455 },
+                { lat: 20.030979, lng: 73.857543 },
+                { lat: 20.025485, lng: 73.842049 },
+                { lat: 19.997236, lng: 73.844663 },
+                { lat: 20.001793, lng: 73.879995 },
+                { lat: 19.996504, lng: 73.899611 },
+                { lat: 19.996988, lng: 73.907798 },
+                { lat: 19.991788, lng: 73.910970 }         // Station 4 coordinates
+            ];
+
+            let url = 'https://www.google.com/maps/dir/';
+
+            routeCoordinates.forEach(station => {
+                url += `${station.lat},${station.lng}/`;
+            });
+
+            // Add the starting point as the bus location
+            const busLocation = `/${latitude},${longitude}`;
+
+            url += busLocation;
+
+            window.open(url, '_blank');
+        }
+
+        // Fetch bus location every 5 seconds
+        setInterval(fetchBusLocation, 5000);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Track Bus</h2>
+        <div id="busLocation"></div>
+        <h3>Bus Stops:</h3>
+        <div id="station-1" class="station">Station 1</div>
+        <div id="station-2" class="station">Station 2</div>
+        <div id="station-3" class="station">Station 3</div>
+        <div id="station-4" class="station">Station 4</div>
+        <button onclick="viewMap()">View Map</button>
+    </div>
+</body>
+</html>

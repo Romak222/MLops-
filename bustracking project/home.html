@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Tracking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bus-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            z-index: -1;
+        }
+
+        .menu-bar {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background for better readability */
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .menu-bar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background for better readability */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 400px;
+            max-width: 100%;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .option {
+            margin-bottom: 20px;
+        }
+
+        .option a {
+            display: block;
+            position: relative;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .option a img {
+            width: 100%;
+            max-width: 100px; /* Set the maximum width to 100 pixels */
+            height: auto;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .option a span {
+            display: block;
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border-top: 1px solid #ddd;
+        }
+
+        .option a:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+<img class="bus-image" src="bus-cover-image.jpg" alt="Bus Cover Image">
+
+<div class="menu-bar">
+    <a href="#">Home</a>
+    <a href="#">Profile</a>
+    <a href="about.html">About</a>
+</div>
+
+<div class="container">
+    <h2>Welcome to Bus Tracking System</h2>
+
+    <div class="option">
+        <a href="track-bus.html">
+            <img src="track-bus-image.png" alt="Track Bus">
+            <span>Track Bus</span>
+        </a>
+    </div>
+
+    <div class="option">
+        <a href="timetable.html"> <!-- Changed from "see-buses.html" to "timetable.html" -->
+            <img src="timetable.png" alt="Timetable"> <!-- Adjusted image size to be the same as "Track Bus" -->
+            <span>Timetable</span>
+        </a>
+    </div>
+
+    <div class="option">
+        <a href="bus-routes.html">
+            <img src="busroute.png" alt="Bus Routes"> <!-- Adjusted image size to be the same as "Track Bus" -->
+            <span>Bus Routes</span>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
